@@ -71,7 +71,7 @@ export function isSuggestedPost(root: HTMLElement): boolean {
  * True when `root` is a promoted (sponsored) post.
  *
  * LinkedIn labels these with a `<p>` whose text is either exactly "Promoted" or begins
- * "Promoted •" (e.g. "Promoted • Partnership with OpenAI"). We match that label paragraph
+ * "Promoted •" (e.g. "Promoted • Partnership with Example Co"). We match that label paragraph
  * and skip the post's expandable body text box (a `<p>` wrapping a
  * `[data-testid="expandable-text-box"]`), so body copy that happens to start with the word
  * "Promoted" never trips the filter.
