@@ -1,11 +1,12 @@
-/* ABOUTME: Styles for the LinkedIn Purify popup. */
-/* ABOUTME: Compact toggle row plus a link into the full settings page. */
+/* ABOUTME: Styles for the LinkedIn Purify options (configuration) page. */
+/* ABOUTME: Dark-and-light aware, with a toggle switch for each feed filter. */
 :root {
   color-scheme: light dark;
   --bg: #ffffff;
   --fg: #1a1a1a;
   --muted: #5a5a5a;
-  --accent: #0a66c2;
+  --line: #e3e3e3;
+  --accent: #0a66c2; /* LinkedIn blue */
   --track: #c9c9c9;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -15,6 +16,7 @@
     --bg: #1b1f23;
     --fg: #f2f2f2;
     --muted: #a3a3a3;
+    --line: #2f353b;
     --accent: #4593e6;
     --track: #4a4f55;
   }
@@ -22,34 +24,63 @@
 
 body {
   margin: 0;
-  min-width: 260px;
   background: var(--bg);
   color: var(--fg);
 }
 
-.popup {
-  padding: 0.9rem 1rem 1rem;
+.settings {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 2.5rem;
 }
 
-.popup h1 {
-  margin: 0 0 0.75rem;
-  font-size: 1.05rem;
+.settings header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.4rem;
 }
 
-.row {
+.settings .tagline {
+  margin: 0 0 1.5rem;
+  color: var(--muted);
+}
+
+.filters {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.filter {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  padding: 1rem 1.15rem;
   cursor: pointer;
-  padding: 0.35rem 0;
 }
 
-.row-title {
-  font-size: 0.92rem;
-  font-weight: 500;
+.filter + .filter {
+  border-top: 1px solid var(--line);
 }
 
+.filter-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.filter-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.filter-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* Toggle switch built from a checkbox. */
 .switch {
   appearance: none;
   -webkit-appearance: none;
@@ -88,16 +119,8 @@ body {
   outline-offset: 2px;
 }
 
-.link {
-  margin-top: 0.75rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--accent);
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.link:hover {
-  text-decoration: underline;
+.settings footer .hint {
+  margin: 1.25rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
 }

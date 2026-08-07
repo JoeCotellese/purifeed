@@ -1,42 +1,64 @@
-// ABOUTME: Content script that strips noise from the LinkedIn feed.
-// ABOUTME: Runs on linkedin.com, hides suggested/promoted feed cards, re-runs as the feed lazy-loads.
+// ABOUTME: Content script that strips noise from the LinkedIn feed: suggested posts and the news module.
+// ABOUTME: Applies the saved toggles on load, follows infinite scroll, and reacts to toggle changes live.
+import { hideSuggested, hideNews, hidePuzzles } from '../lib/settings';
+import { hideSuggestedPosts, restoreHiddenPosts } from '../lib/purify';
+import {
+  NEWS_TITLE,
+  PUZZLES_TITLE,
+  hideSidebarModule,
+  restoreSidebarModule,
+} from '../lib/sidebar';
 
 export default defineContentScript({
   matches: ['*://*.linkedin.com/*'],
   runAt: 'document_idle',
-  main() {
-    // Text markers LinkedIn puts in a feed card's header for non-followed content.
-    // These are the low-risk, high-signal ones to start with; the popup will make
-    // each category toggleable in a later iteration.
-    const NOISE_MARKERS = ['Suggested', 'Promoted'];
+  async main() {
+    let suggestedEnabled = await hideSuggested.getValue();
+    let newsEnabled = await hideNews.getValue();
+    let puzzlesEnabled = await hidePuzzles.getValue();
 
-    const isNoiseCard = (card: HTMLElement): boolean => {
-      const header = card.querySelector<HTMLElement>(
-        '.update-components-header, .update-components-actor__description',
-      );
-      const label = header?.textContent?.trim() ?? '';
-      return NOISE_MARKERS.some((marker) => label.startsWith(marker));
-    };
-
-    const purify = (): number => {
-      const cards = document.querySelectorAll<HTMLElement>(
-        'div.feed-shared-update-v2, div[data-id^="urn:li:activity"]',
-      );
-      let hidden = 0;
-      cards.forEach((card) => {
-        if (card.dataset.lipHidden === 'true') return;
-        if (isNoiseCard(card)) {
-          card.style.display = 'none';
-          card.dataset.lipHidden = 'true';
-          hidden += 1;
-        }
+    // Coalesce the bursts of mutations LinkedIn fires while rendering into one pass per frame.
+    let scheduled = false;
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => {
+        scheduled = false;
+        apply();
       });
-      return hidden;
     };
 
-    // Initial pass, then keep up with LinkedIn's infinite scroll / SPA re-renders.
-    purify();
-    const observer = new MutationObserver(() => purify());
+    const applyModule = (title: string, enabled: boolean) => {
+      if (enabled) hideSidebarModule(document, title);
+      else restoreSidebarModule(document, title);
+    };
+
+    const apply = () => {
+      if (suggestedEnabled) hideSuggestedPosts(document);
+      else restoreHiddenPosts(document);
+
+      applyModule(NEWS_TITLE, newsEnabled);
+      applyModule(PUZZLES_TITLE, puzzlesEnabled);
+    };
+
+    apply();
+
+    // Keep up with the infinite scroll and SPA re-renders that add feed cards over time.
+    const observer = new MutationObserver(schedule);
     observer.observe(document.body, { childList: true, subtree: true });
+
+    // Flip immediately when a toggle changes in the popup or options page, no reload needed.
+    hideSuggested.watch((next) => {
+      suggestedEnabled = next;
+      apply();
+    });
+    hideNews.watch((next) => {
+      newsEnabled = next;
+      apply();
+    });
+    hidePuzzles.watch((next) => {
+      puzzlesEnabled = next;
+      apply();
+    });
   },
 });
