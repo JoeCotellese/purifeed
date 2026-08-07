@@ -1,6 +1,6 @@
 // ABOUTME: Binds a checkbox element to a boolean setting for the popup and options page.
 // ABOUTME: Reflects stored value, writes changes, and stays live if the other surface flips it.
-import { hideSuggested, hideNews, hidePuzzles } from './settings';
+import { hideSuggested, hideNews, hidePuzzles, hidePromoted } from './settings';
 
 /** The slice of a WXT storage item this binding needs: read, write, and watch a boolean. */
 interface BooleanSetting {
@@ -34,4 +34,9 @@ export function bindHideNewsToggle(checkbox: HTMLInputElement): Promise<void> {
 /** Wire a checkbox to the "hide Today’s puzzles" setting. */
 export function bindHidePuzzlesToggle(checkbox: HTMLInputElement): Promise<void> {
   return bindToggle(checkbox, hidePuzzles);
+}
+
+/** Wire a checkbox to the "hide promoted posts" setting. */
+export function bindHidePromotedToggle(checkbox: HTMLInputElement): Promise<void> {
+  return bindToggle(checkbox, hidePromoted);
 }

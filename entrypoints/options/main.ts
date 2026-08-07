@@ -5,6 +5,7 @@ import {
   bindHideSuggestedToggle,
   bindHideNewsToggle,
   bindHidePuzzlesToggle,
+  bindHidePromotedToggle,
 } from '../../lib/toggle-ui';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -21,6 +22,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           <span class="filter-desc">Remove "Suggested" posts from people and pages you don't follow.</span>
         </span>
         <input type="checkbox" id="hide-suggested" class="switch" />
+      </label>
+      <label class="filter" for="hide-promoted">
+        <span class="filter-text">
+          <span class="filter-title">Hide promoted posts</span>
+          <span class="filter-desc">Remove sponsored "Promoted" ads from the feed.</span>
+        </span>
+        <input type="checkbox" id="hide-promoted" class="switch" />
       </label>
       <label class="filter" for="hide-news">
         <span class="filter-text">
@@ -45,5 +53,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `;
 
 void bindHideSuggestedToggle(document.querySelector<HTMLInputElement>('#hide-suggested')!);
+void bindHidePromotedToggle(document.querySelector<HTMLInputElement>('#hide-promoted')!);
 void bindHideNewsToggle(document.querySelector<HTMLInputElement>('#hide-news')!);
 void bindHidePuzzlesToggle(document.querySelector<HTMLInputElement>('#hide-puzzles')!);

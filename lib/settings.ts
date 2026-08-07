@@ -28,3 +28,12 @@ export const hideNews = storage.defineItem<boolean>('local:hideNews', {
 export const hidePuzzles = storage.defineItem<boolean>('local:hidePuzzles', {
   fallback: true,
 });
+
+/**
+ * Whether promoted (sponsored) posts are hidden from the feed. Independent of the other
+ * toggles so it can be flipped on its own. Defaults to `true`: stripping ads is the point.
+ * Stored in `local` so it persists per-browser without a sign-in.
+ */
+export const hidePromoted = storage.defineItem<boolean>('local:hidePromoted', {
+  fallback: true,
+});
