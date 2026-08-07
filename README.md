@@ -3,8 +3,6 @@
 Browser extension (Chrome + Firefox) that strips suggested posts, promoted
 clutter, and noise out of the LinkedIn feed. Built with [WXT](https://wxt.dev).
 
-> **Private repository.** The public marketing site lives in a separate repo.
-
 ## Develop
 
 ```sh
