@@ -12,7 +12,16 @@ export default defineConfig({
     permissions: ['storage'],
     host_permissions: ['*://*.linkedin.com/*'],
     ...(browser === 'firefox'
-      ? { browser_specific_settings: { gecko: { id: 'lipurify@cotellese.me' } } }
+      ? {
+          browser_specific_settings: {
+            gecko: {
+              id: 'lipurify@cotellese.me',
+              // Mozilla requires an explicit data-collection declaration. This extension
+              // collects nothing (only local storage, no network), so we declare "none".
+              data_collection_permissions: { required: ['none'] },
+            },
+          },
+        }
       : {}),
   }),
 });
