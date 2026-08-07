@@ -47,6 +47,17 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </section>
 
     <footer>
+      <div class="support">
+        <a class="coffee" href="https://buymeacoffee.com/joecotellese" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 9h13v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" />
+            <path d="M17 10h2a2 2 0 0 1 0 4h-2" />
+            <path d="M7 4v2M11 4v2" />
+          </svg>
+          Buy me a coffee
+        </a>
+        <a class="feature-link" href="https://github.com/JoeCotellese/LinkedIn-Purify/issues/new" target="_blank" rel="noopener noreferrer">Request a feature →</a>
+      </div>
       <p class="hint">Changes apply to open LinkedIn tabs right away.</p>
     </footer>
   </main>
