@@ -52,4 +52,8 @@ collects no data (see `data_collection_permissions` in `wxt.config.ts`).
 - `entrypoints/background.ts` — background service worker
 - `wxt.config.ts` — manifest and build config
 
+## License
+
+MIT — see [LICENSE](LICENSE).
+
 LinkedIn Purify is not affiliated with LinkedIn or Microsoft.
