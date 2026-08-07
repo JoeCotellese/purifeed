@@ -1,0 +1,96 @@
+// ABOUTME: Pure DOM logic for finding LinkedIn feed posts and detecting "Suggested" ones.
+// ABOUTME: No extension/WXT imports so it runs under jsdom in unit tests.
+
+/** The visually-hidden heading LinkedIn puts at the top of every feed post unit. */
+const FEED_POST_HEADING = 'Feed post';
+
+/** Exact label text LinkedIn shows on a suggested (non-followed) feed post. */
+const SUGGESTED_LABEL = 'Suggested';
+
+/** Old-markup card selector, kept so the filter still works if LinkedIn serves legacy DOM. */
+const LEGACY_CARD_SELECTOR = 'div.feed-shared-update-v2, div[data-id^="urn:li:activity"]';
+
+/** Data attribute marking a post we hid, and the display value we replaced. */
+const HIDDEN_ATTR = 'lipHidden';
+const PREV_DISPLAY_ATTR = 'lipPrevDisplay';
+
+/**
+ * Locate the root element of every feed post in `scope`.
+ *
+ * Current LinkedIn markup uses obfuscated class names, so we anchor on structure
+ * that carries meaning: each post opens with an `<h2>` whose text is "Feed post".
+ * The post's outer container is that heading's parent. We also match the legacy
+ * `.feed-shared-update-v2` card so an older DOM still gets filtered.
+ */
+export function findFeedPostRoots(scope: ParentNode): HTMLElement[] {
+  const roots = new Set<HTMLElement>();
+
+  scope.querySelectorAll<HTMLHeadingElement>('h2').forEach((heading) => {
+    if (heading.textContent?.trim() !== FEED_POST_HEADING) return;
+    const root = heading.parentElement;
+    if (root) roots.add(root);
+  });
+
+  scope.querySelectorAll<HTMLElement>(LEGACY_CARD_SELECTOR).forEach((card) => {
+    roots.add(card);
+  });
+
+  return [...roots];
+}
+
+/**
+ * True when `root` is a suggested post.
+ *
+ * LinkedIn labels these with a `<p>` whose entire text is "Suggested" (its child
+ * `<span>` holds the word). Matching the paragraph's trimmed text exactly avoids
+ * false positives from body copy that merely contains the word. Legacy markup put
+ * the marker in the card header instead, so we check that too.
+ */
+export function isSuggestedPost(root: HTMLElement): boolean {
+  for (const p of root.querySelectorAll('p')) {
+    if (p.textContent?.trim() === SUGGESTED_LABEL) return true;
+  }
+
+  const legacyHeader = root.querySelector<HTMLElement>(
+    '.update-components-header, .update-components-actor__description',
+  );
+  if (legacyHeader?.textContent?.trim().startsWith(SUGGESTED_LABEL)) return true;
+
+  return false;
+}
+
+/** Hide a post, remembering its previous inline display so it can be restored. */
+export function hidePost(el: HTMLElement): void {
+  if (el.dataset[HIDDEN_ATTR] === 'true') return;
+  el.dataset[PREV_DISPLAY_ATTR] = el.style.display;
+  el.style.display = 'none';
+  el.dataset[HIDDEN_ATTR] = 'true';
+}
+
+/** Reverse `hidePost`, restoring the element's original inline display. */
+export function showPost(el: HTMLElement): void {
+  if (el.dataset[HIDDEN_ATTR] !== 'true') return;
+  el.style.display = el.dataset[PREV_DISPLAY_ATTR] ?? '';
+  delete el.dataset[HIDDEN_ATTR];
+  delete el.dataset[PREV_DISPLAY_ATTR];
+}
+
+/** Hide every suggested post found in `scope`. Returns how many were newly hidden. */
+export function hideSuggestedPosts(scope: ParentNode): number {
+  let hidden = 0;
+  for (const root of findFeedPostRoots(scope)) {
+    if (root.dataset[HIDDEN_ATTR] === 'true') continue;
+    if (isSuggestedPost(root)) {
+      hidePost(root);
+      hidden += 1;
+    }
+  }
+  return hidden;
+}
+
+/** Restore every post this extension previously hid in `scope`. Returns the count restored. */
+export function restoreHiddenPosts(scope: ParentNode): number {
+  const hidden = scope.querySelectorAll<HTMLElement>(`[data-lip-hidden="true"]`);
+  hidden.forEach(showPost);
+  return hidden.length;
+}
