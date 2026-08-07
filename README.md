@@ -1,7 +1,8 @@
-# LinkedIn Purify — Extension
+# Purifeed — Extension
 
-Browser extension (Chrome + Firefox) that strips suggested posts, promoted
-clutter, and noise out of the LinkedIn feed. Built with [WXT](https://wxt.dev).
+Purifeed is a browser extension (Chrome + Firefox) that strips suggested posts,
+promoted clutter, and noise out of the LinkedIn feed. Built with
+[WXT](https://wxt.dev).
 
 ## Develop
 
