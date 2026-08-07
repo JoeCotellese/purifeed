@@ -1,0 +1,12 @@
+<!-- ABOUTME: Source vector for the LinkedIn Purify toolbar/store icon (sparkle over a clean feed). -->
+<!-- ABOUTME: Rasterized to public/icon/{16,32,48,96,128}.png; edit here then re-run the rasterize step. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect x="0" y="0" width="128" height="128" rx="28" fill="#0A66C2"/>
+  <g fill="#ffffff">
+    <rect x="30" y="36" width="70" height="12" rx="6"/>
+    <rect x="30" y="58" width="54" height="12" rx="6"/>
+    <rect x="30" y="80" width="30" height="12" rx="6"/>
+    <path d="M94,70 L99.66,86.34 L116,92 L99.66,97.66 L94,114 L88.34,97.66 L72,92 L88.34,86.34 Z"/>
+    <path d="M112,59 L114.26,65.74 L121,68 L114.26,70.26 L112,77 L109.74,70.26 L103,68 L109.74,65.74 Z"/>
+  </g>
+</svg>
