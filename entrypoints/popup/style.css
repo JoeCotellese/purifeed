@@ -31,8 +31,20 @@ body {
   padding: 0.9rem 1rem 1rem;
 }
 
-.popup h1 {
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin: 0 0 0.75rem;
+}
+
+.brand-icon {
+  border-radius: 6px;
+  flex: 0 0 auto;
+}
+
+.popup h1 {
+  margin: 0;
   font-size: 1.05rem;
 }
 

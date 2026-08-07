@@ -10,7 +10,10 @@ import {
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <main class="popup">
-    <h1>LinkedIn Purify</h1>
+    <header class="brand">
+      <img class="brand-icon" src="/icon/48.png" alt="" width="24" height="24" />
+      <h1>Purifeed</h1>
+    </header>
     <label class="row" for="hide-suggested">
       <span class="row-title">Hide suggested posts</span>
       <input type="checkbox" id="hide-suggested" class="switch" />

@@ -10,9 +10,12 @@ import {
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <main class="settings">
-    <header>
-      <h1>LinkedIn Purify</h1>
-      <p class="tagline">Choose what to strip from your feed.</p>
+    <header class="brand">
+      <img class="brand-icon" src="/icon/48.png" alt="" width="32" height="32" />
+      <div>
+        <h1>Purifeed</h1>
+        <p class="tagline">Choose what to strip from your feed.</p>
+      </div>
     </header>
 
     <section class="filters">
@@ -56,12 +59,21 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           </svg>
           Buy me a coffee
         </a>
-        <a class="feature-link" href="https://github.com/JoeCotellese/LinkedIn-Purify/issues/new" target="_blank" rel="noopener noreferrer">Request a feature →</a>
+        <a class="feature-link" href="https://github.com/JoeCotellese/purifeed/issues/new" target="_blank" rel="noopener noreferrer">Request a feature →</a>
       </div>
       <p class="hint">Changes apply to open LinkedIn tabs right away.</p>
+      <p class="trust">
+        <span id="version"></span>
+        Not affiliated with LinkedIn or Microsoft. Purifeed collects no data and
+        makes no network requests.
+        <a href="https://github.com/JoeCotellese/purifeed/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer">Privacy</a>
+      </p>
     </footer>
   </main>
 `;
+
+const version = browser.runtime.getManifest().version;
+document.querySelector<HTMLSpanElement>('#version')!.textContent = `v${version} · `;
 
 void bindHideSuggestedToggle(document.querySelector<HTMLInputElement>('#hide-suggested')!);
 void bindHidePromotedToggle(document.querySelector<HTMLInputElement>('#hide-promoted')!);
