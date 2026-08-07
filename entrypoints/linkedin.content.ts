@@ -1,7 +1,13 @@
 // ABOUTME: Content script that strips noise from the LinkedIn feed: suggested posts and the news module.
 // ABOUTME: Applies the saved toggles on load, follows infinite scroll, and reacts to toggle changes live.
-import { hideSuggested, hideNews, hidePuzzles } from '../lib/settings';
-import { hideSuggestedPosts, restoreHiddenPosts } from '../lib/purify';
+import { hideSuggested, hideNews, hidePuzzles, hidePromoted } from '../lib/settings';
+import {
+  hideSuggestedPosts,
+  hidePromotedPosts,
+  restoreHiddenPosts,
+  SUGGESTED_REASON,
+  PROMOTED_REASON,
+} from '../lib/purify';
 import {
   NEWS_TITLE,
   PUZZLES_TITLE,
@@ -16,6 +22,7 @@ export default defineContentScript({
     let suggestedEnabled = await hideSuggested.getValue();
     let newsEnabled = await hideNews.getValue();
     let puzzlesEnabled = await hidePuzzles.getValue();
+    let promotedEnabled = await hidePromoted.getValue();
 
     // Coalesce the bursts of mutations LinkedIn fires while rendering into one pass per frame.
     let scheduled = false;
@@ -35,7 +42,10 @@ export default defineContentScript({
 
     const apply = () => {
       if (suggestedEnabled) hideSuggestedPosts(document);
-      else restoreHiddenPosts(document);
+      else restoreHiddenPosts(document, SUGGESTED_REASON);
+
+      if (promotedEnabled) hidePromotedPosts(document);
+      else restoreHiddenPosts(document, PROMOTED_REASON);
 
       applyModule(NEWS_TITLE, newsEnabled);
       applyModule(PUZZLES_TITLE, puzzlesEnabled);
@@ -58,6 +68,10 @@ export default defineContentScript({
     });
     hidePuzzles.watch((next) => {
       puzzlesEnabled = next;
+      apply();
+    });
+    hidePromoted.watch((next) => {
+      promotedEnabled = next;
       apply();
     });
   },
