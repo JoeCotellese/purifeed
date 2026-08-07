@@ -101,10 +101,13 @@ https://github.com/JoeCotellese/purifeed/blob/main/PRIVACY.md
 
 ## Store assets checklist
 
-- [ ] Icon 128×128 (already in `public/icon/128.png`)
-- [ ] Screenshot(s) 1280×800 or 640×400 — at least one required:
-  - [ ] Settings page (`docs/store-assets/screenshot-settings.png` — generated)
-  - [ ] LinkedIn feed BEFORE (noise visible) — needs a logged-in session
-  - [ ] LinkedIn feed AFTER (noise hidden) — needs a logged-in session
-- [ ] Small promo tile 440×280 (recommended, not required)
-- [ ] Marquee promo 1400×560 (optional)
+- [x] Icon 128×128 (`public/icon/128.png`)
+- [x] Screenshots 1280×800 (at least one required — three provided):
+  - [x] Hero / wordmark (`docs/store-assets/screenshot-hero.png`)
+  - [x] How it works — before/after feed (`docs/store-assets/screenshot-howitworks.png`)
+  - [x] Settings page (`docs/store-assets/screenshot-settings.png`)
+- [x] Small promo tile 440×280 (`docs/store-assets/promo-tile-440x280.png`)
+- [ ] Marquee promo 1400×560 (optional — not yet produced)
+
+The feed screenshots are illustrated mockups (generic professional feed, no LinkedIn
+marks), not captures of a real account, so nothing private ships in the listing.
