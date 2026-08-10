@@ -3,7 +3,7 @@
   "description": "Purifeed browser extension",
   "license": "MIT",
   "private": true,
-  "version": "2026.8.0",
+  "version": "2026.8.1",
   "type": "module",
   "engines": {
     "node": ">=20"
