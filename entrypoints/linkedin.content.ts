@@ -1,6 +1,6 @@
-// ABOUTME: Content script that strips noise from the LinkedIn feed: suggested posts and the news module.
+// ABOUTME: Content script that strips noise from LinkedIn: suggested/promoted posts, sidebar modules, and display ads.
 // ABOUTME: Applies the saved toggles on load, follows infinite scroll, and reacts to toggle changes live.
-import { hideSuggested, hideNews, hidePuzzles, hidePromoted } from '../lib/settings';
+import { hideSuggested, hideNews, hidePuzzles, hidePromoted, hideAds } from '../lib/settings';
 import {
   hideSuggestedPosts,
   hidePromotedPosts,
@@ -14,6 +14,7 @@ import {
   hideSidebarModule,
   restoreSidebarModule,
 } from '../lib/sidebar';
+import { hideDisplayAds, restoreDisplayAds } from '../lib/display-ads';
 
 export default defineContentScript({
   matches: ['*://*.linkedin.com/*'],
@@ -23,6 +24,7 @@ export default defineContentScript({
     let newsEnabled = await hideNews.getValue();
     let puzzlesEnabled = await hidePuzzles.getValue();
     let promotedEnabled = await hidePromoted.getValue();
+    let adsEnabled = await hideAds.getValue();
 
     // Coalesce the bursts of mutations LinkedIn fires while rendering into one pass per frame.
     let scheduled = false;
@@ -46,6 +48,9 @@ export default defineContentScript({
 
       if (promotedEnabled) hidePromotedPosts(document);
       else restoreHiddenPosts(document, PROMOTED_REASON);
+
+      if (adsEnabled) hideDisplayAds(document);
+      else restoreDisplayAds(document);
 
       applyModule(NEWS_TITLE, newsEnabled);
       applyModule(PUZZLES_TITLE, puzzlesEnabled);
@@ -72,6 +77,10 @@ export default defineContentScript({
     });
     hidePromoted.watch((next) => {
       promotedEnabled = next;
+      apply();
+    });
+    hideAds.watch((next) => {
+      adsEnabled = next;
       apply();
     });
   },

@@ -37,3 +37,12 @@ export const hidePuzzles = storage.defineItem<boolean>('local:hidePuzzles', {
 export const hidePromoted = storage.defineItem<boolean>('local:hidePromoted', {
   fallback: true,
 });
+
+/**
+ * Whether right-rail display ads (sponsored creatives) are hidden. Independent of the other
+ * toggles so it can be flipped on its own. Defaults to `true`: stripping ads is the point.
+ * Stored in `local` so it persists per-browser without a sign-in.
+ */
+export const hideAds = storage.defineItem<boolean>('local:hideAds', {
+  fallback: true,
+});
